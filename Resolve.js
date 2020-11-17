@@ -1,3 +1,8 @@
+// var promise2 = (number) => new Promise((resolve, reject) => {
+// 	if (number == 40) reject("Nop");
+// 	resolve(number);
+// });
+
 class User {
   constructor() {
     this.users = [
@@ -12,7 +17,8 @@ class User {
     ];
   }
   async getUsers(cb) {
-    await setTimeout(() => {}, 400);
+    // todo: ask why 'await' has no effect on the type of this expression.ts(80007)
+    await setTimeout(() => {}, 4000);
     cb(this.users);
   }
   async getUserById(id, cb) {
@@ -50,44 +56,33 @@ class Photo {
   }
 }
 
-module.exports = {
-  User,
-  Photo,
-};
-
-// var promise2 = (number) => new Promise((resolve, reject) => {
-// 	if (number == 40) reject("Nop");
-// 	resolve(number);
-// });
-
-const { User, Photo } = require("./Ex");
-
 const userModel = new User();
 const photoModel = new Photo();
 
 const getUserByIdPromise = (id) =>
-  new Promise((resolve, reject) => {
+  new Promise((resolve) => {
     userModel.getUserById(id, (user) => resolve(user));
   });
 
 const getPhotosByUserIdPromise = (user_id) =>
-  new Promise((resolve, reject) => {
+  new Promise((resolve) => {
     photoModel.getPhotosByUserId(user_id, (photo) => resolve(photo));
   });
 
 const getUsers = () =>
-  new Promise((resolve, reject) => {
+  new Promise((resolve) => {
     userModel.getUsers((users) => resolve(users));
   });
 
 const getPhotos = () =>
-  new Promise((resolve, reject) => {
+  new Promise((resolve) => {
     //reject(new Error("Error"))
     photoModel.getPhotos((photos) => resolve(photos));
   });
 
 let user = {};
 let photo = {};
+
 getUserByIdPromise(2)
   .then((res) => {
     user = res;
